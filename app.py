@@ -71,34 +71,73 @@ st.title("Rahul's AI Chatbot")
 
 #Sidebar Hide code for public
 # Define user authentication
-user_authenticated = False  # Change this based on authentication logic
+import streamlit as st
+import openai
 
-if not user_authenticated:
-    # Hide the sidebar completely
-    hide_sidebar_style = """
-        <style>
-        [data-testid="stSidebar"] {display: none;}
-        </style>
-    """
-    st.markdown(hide_sidebar_style, unsafe_allow_html=True)
-else:
-    st.sidebar.header("Upload PDF")
-    uploaded_file = st.sidebar.file_uploader("Upload a PDF", type=["pdf"])
+# ✅ Move this to the top
+st.set_page_config(page_title="Rahul's AI Clone Chatbot", layout="wide")
 
-    if uploaded_file is not None:
-        pdf_text = load_pdf(uploaded_file)
-        chunks = chunk_text(pdf_text)
-        embeddings = [embedding_model.embed_query(chunk) for chunk in chunks]
-        collection.add(
-            ids=[str(i) for i in range(len(chunks))],
-            documents=chunks,
-            embeddings=embeddings
+# ✅ Set up Groq API key (Replace with actual key)
+GROQ_API_KEY = "your_groq_api_key"
+openai.api_key = GROQ_API_KEY
+
+# ✅ Custom function to call Groq Llama 3 API
+def query_llama3(user_input):
+    """Fetch response from Groq Llama 3 API with error handling"""
+    try:
+        response = openai.ChatCompletion.create(
+            model="llama-3-8b",
+            messages=[{"role": "user", "content": user_input}],
+            max_tokens=150,
+            temperature=0.7
         )
-        st.sidebar.success("You are ready to use this chatbot now!")
-#Sidebar Code hide ends here
+        return response["choices"][0]["message"]["content"]
+    except openai.error.AuthenticationError:
+        return "❌ Error: Invalid API key. Please check your Groq API key."
+    except openai.error.APIConnectionError:
+        return "❌ Error: Cannot connect to Groq servers. Check internet or API availability."
+    except Exception as e:
+        return f"❌ Error: {str(e)}"
 
-user_query = st.text_input("Ask a question:")
-if st.button("Get Answer"):
+# ✅ Title
+st.markdown("<h2 style='text-align: center;'>🤖 Rahul's AI Clone Chatbot</h2>", unsafe_allow_html=True)
+
+# ✅ Session state for chat history
+if "messages" not in st.session_state:
+    st.session_state["messages"] = []
+
+# ✅ Chat display area (styled like WhatsApp)
+chat_container = st.container()
+with chat_container:
+    for message in st.session_state["messages"]:
+        role, content = message["role"], message["content"]
+        if role == "user":
+            st.markdown(f"""
+            <div style='text-align: right; background-color: #DCF8C6; padding: 10px; margin: 5px; border-radius: 10px; width: 60%; float: right;'>
+                <b>👤 You:</b> {content}
+            </div><div style='clear: both;'></div>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown(f"""
+            <div style='text-align: left; background-color: #E0E0E0; padding: 10px; margin: 5px; border-radius: 10px; width: 60%;'>
+                <b>🤖 AI:</b> {content}
+            </div><div style='clear: both;'></div>
+            """, unsafe_allow_html=True)
+
+# ✅ User input box (fixed at the bottom)
+user_query = st.text_input("Type a message...", key="input", placeholder="Ask me anything...")
+
+# ✅ Submit button
+if st.button("Send"):
     if user_query:
-        response = query_llama3(user_query)
-        st.write("🤖", response)
+        # Store user message
+        st.session_state["messages"].append({"role": "user", "content": user_query})
+        
+        # Get AI response
+        ai_response = query_llama3(user_query)
+        
+        # Store AI message
+        st.session_state["messages"].append({"role": "assistant", "content": ai_response})
+        
+        # Refresh page to show new messages
+        st.experimental_rerun()
