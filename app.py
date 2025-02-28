@@ -79,19 +79,19 @@ def query_llama3(user_query):
 # Streamlit UI
 st.title("AI Chatbot")
 
-#st.sidebar.header("Upload PDF")
-#uploaded_file = st.sidebar.file_uploader("Upload a PDF", type=["pdf"])
+st.sidebar.header("Upload PDF")
+uploaded_file = st.sidebar.file_uploader("Upload a PDF", type=["pdf"])
 
-#if uploaded_file is not None:
-    #pdf_text = load_pdf(uploaded_file)
-    #chunks = chunk_text(pdf_text)
-    #embeddings = [embedding_model.embed_query(chunk) for chunk in chunks]
-    #collection.add(
-        #ids=[str(i) for i in range(len(chunks))],
-        #documents=chunks,
-        #embeddings=embeddings
-    #)
-    #st.sidebar.success("You are ready to use this chatboat now!")
+if uploaded_file is not None:
+    pdf_text = load_pdf(uploaded_file)
+    chunks = chunk_text(pdf_text)
+    embeddings = [embedding_model.embed_query(chunk) for chunk in chunks]
+    collection.add(
+        ids=[str(i) for i in range(len(chunks))],
+        documents=chunks,
+        embeddings=embeddings
+    )
+    st.sidebar.success("You are ready to use this chatboat now!")
 
 user_query = st.text_input("Ask a question:")
 if st.button("Get Answer"):
