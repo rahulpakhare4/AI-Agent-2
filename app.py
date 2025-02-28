@@ -77,7 +77,7 @@ def query_llama3(user_query):
     return response.content
 
 # Streamlit UI
-st.title("AI Chatbot")
+st.title("Rahul's AI Chatbot")
 
 #Hide code for public
 # Define user authentication
