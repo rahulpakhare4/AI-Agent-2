@@ -21,7 +21,7 @@ from PyPDF2 import PdfReader
 import numpy as np
 import os
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 
 
 # Initialize models
