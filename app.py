@@ -3,6 +3,7 @@ import sys
 
 
 import streamlit as st
+import pysqlite3
 import chromadb
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -13,6 +14,9 @@ from sentence_transformers import SentenceTransformer, util
 from PyPDF2 import PdfReader
 import numpy as np
 import os
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 
 # Initialize models
 embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
