@@ -1,4 +1,5 @@
 import asyncio
+import os
 import streamlit as st
 import pysqlite3
 import sys
@@ -12,8 +13,6 @@ from langchain.memory import ConversationBufferMemory
 from sentence_transformers import SentenceTransformer, util
 from PyPDF2 import PdfReader
 import numpy as np
-import os
-import sys
 
 # Initialize models
 embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -46,7 +45,7 @@ def evaluate_response(user_query, generated_response, context):
     response_embedding = semantic_model.encode(generated_response, convert_to_tensor=True)
     context_embedding = semantic_model.encode(context, convert_to_tensor=True)
     return util.pytorch_cos_sim(response_embedding, context_embedding)[0][0].item()
-
+    
 def query_llama3(user_query):
     """Handles user queries while retrieving context and past chat history."""
     system_prompt = """
@@ -66,7 +65,7 @@ def query_llama3(user_query):
     response = chat.invoke(messages)
     memory.save_context({"input": user_query}, {"output": response.content})
     return response.content
-
+    
 # Streamlit UI
 st.title("Rahul's AI Chatbot")
 
