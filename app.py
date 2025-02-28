@@ -1,16 +1,9 @@
 import asyncio
-
-
-
 import streamlit as st
-
 import pysqlite3
 import sys
 sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
-
 import chromadb
-
-
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
@@ -21,8 +14,6 @@ from PyPDF2 import PdfReader
 import numpy as np
 import os
 import sys
-
-
 
 # Initialize models
 embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -79,7 +70,7 @@ def query_llama3(user_query):
 # Streamlit UI
 st.title("Rahul's AI Chatbot")
 
-#Hide code for public
+#Sidebar Hide code for public
 # Define user authentication
 user_authenticated = False  # Change this based on authentication logic
 
@@ -105,7 +96,7 @@ else:
             embeddings=embeddings
         )
         st.sidebar.success("You are ready to use this chatbot now!")
-        #Code hide ends here
+#Sidebar Code hide ends here
 
 user_query = st.text_input("Ask a question:")
 if st.button("Get Answer"):
