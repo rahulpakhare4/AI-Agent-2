@@ -78,8 +78,8 @@ def query_llama3(user_query):
 
 # Streamlit UI
 st.title("AI Chatbot")
-st.sidebar.header("Upload PDF")
-uploaded_file = st.sidebar.file_uploader("Upload a PDF", type=["pdf"])
+#st.sidebar.header("Upload PDF")
+#uploaded_file = st.sidebar.file_uploader("Upload a PDF", type=["pdf"])
 
 if uploaded_file is not None:
     pdf_text = load_pdf(uploaded_file)
