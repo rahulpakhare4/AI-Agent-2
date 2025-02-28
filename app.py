@@ -1,10 +1,16 @@
 import asyncio
-import sys
+
 
 
 import streamlit as st
+
 import pysqlite3
+import sys
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+
 import chromadb
+
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
