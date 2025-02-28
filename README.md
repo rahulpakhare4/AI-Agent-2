@@ -1,6 +1,6 @@
 # Rahul's Personal Chatbot 🤖📄
 
-A Streamlit-based chatbot that allows users to upload PDFs, process them using Llama 3 (Groq), and chat with AI using contextual retrieval from ChromaDB.
+Rahul's AI Clone Chatbot – A Streamlit-based chatbot that allows users to upload PDFs, process them using Llama 3 (Groq), and chat with Rahul's AI clone through the chatbox. The chatbot retrieves contextual information from ChromaDB for more accurate responses.
 
 ## Features
 ✅ Upload PDF and extract text  
