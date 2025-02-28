@@ -78,6 +78,7 @@ def query_llama3(user_query):
 
 # Streamlit UI
 st.title("AI Chatbot")
+"""
 #st.sidebar.header("Upload PDF")
 #uploaded_file = st.sidebar.file_uploader("Upload a PDF", type=["pdf"])
 
@@ -91,7 +92,7 @@ if uploaded_file is not None:
         embeddings=embeddings
     )
     st.sidebar.success("You are ready to use this chatboat now!")
-
+"""
 user_query = st.text_input("Ask a question:")
 if st.button("Get Answer"):
     if user_query:
